@@ -3,18 +3,28 @@ import os
 from collections import OrderedDict
 from operator import itemgetter
 import matplotlib.pyplot as plt
-
+# 32 55 
 # Global Variables
 DIRECTORY = 'Data'
 # ID = "qDZ5ZjSJhA"
 # ID = "ozOkFpF87B"
 GAME = 81
+
+# ID = "TgbSpva4XT"
+# ID = "uJWif_ztls"
+# ID = "GpC57e4WHZ"
+# ID = "ndZEZ_Th56"
+# ID = "s6C0Cpa0sF"
+# ID = "y3uC60nHKu"
+# ID = "oZJEYxAYTU"
+ID = "1WkcOL0Fmx"
+# TgbSpva4XT, uJWif_ztls, GpC57e4WHZ, ndZEZ_Th56, s6C0Cpa0sF, y3uC60nHKu, oZJEYxAYTU,1WkcOL0Fmx
 # ID = "DO5_qBKPEw"
 # ID = "d7EkWI8o2P"
 # ID = "JuUMMU8wiU"
 # ID = "Q-SW0Q6z3s"
 # ID = "Tpn_Cnr1gy"
-ID = "SCoB5LKYVh"
+# ID = "SCoB5LKYVh"
 PLAYER_ID = {}
 # qDZ5ZjSJhA - David
 # ozOkFpF87B - Andrew
@@ -194,13 +204,29 @@ def biggest_pots(number_of_pots):
     pass
 
 # Tells you how much you made based on the position you were from the big blind, only looks at games that have 5 or more people.
-def profit_per_position():
-    pass
+def profit_per_position(shortstacked = False, noshortstacked = False, deepstacked = False, nodeepstacked = False, players = 2, position = []):
+    print_params(shortstacked=shortstacked, nodeepstacked=nodeepstacked, noshortstacked=noshortstacked, deepstacked=deepstacked, position = position)
+    eligible_hands = 0
+    profit = 0
+    for hand in HANDS:
+    # Gets te unique seats
+        if prep_helper(shortstacked=shortstacked, nodeepstacked=nodeepstacked, noshortstacked=noshortstacked, deepstacked=deepstacked, position = position, hand = hand):
+            continue
+        eligible_hands += 1
+        for player in hand['players']:
+            if player['id'] == ID:
+                try:
+                    profit += player['netGain']
+                except:
+                    continue
+    print(f"${profit/100:.2f}")
+
 
 # The number of times you overbet and the percentage of the amount of times you won when you overbet
 # Will also tell you the number of times you called an overbet and the amount of times you won when you called
 def overbet_percent():
     pass
+
 
 def total_profit():
     profit = 0
@@ -210,7 +236,7 @@ def total_profit():
             if player['id'] == ID:
                 try:
                     profit += int(player['netGain'])
-                    graph.append(profit)
+                    graph.append(profit/100)
                 except:
                     continue
     plt.plot(graph)
@@ -302,18 +328,19 @@ def name_count():
         print()
 
 def main():
+    # load_hands(game = GAME)
     load_hands()
-    # load_hands()
-    total_profit()
+    # total_profit()
     # unique_hands()
-    # vpip(deepstacked=True)
-    # vpip(shortstacked=True)
-    # vpip(position = [0])
-    # vpip(position = [1])
-    # vpip(position = [2])
-    # vpip(position = [4])
-    # vpip(position = [5])
-    # vpip()
+    vpip(deepstacked=True)
+    vpip(shortstacked=True)
+    vpip(position = [0])
+    vpip(position = [1])
+    vpip(position = [2])
+    vpip(position = [4])
+    vpip(position = [5])
+    vpip()
+    print()
     rfi(deepstacked=True)
     rfi(shortstacked=True)
     rfi(position = [0])
@@ -322,6 +349,14 @@ def main():
     rfi(position = [4])
     rfi(position = [5])
     rfi()
+    # profit_per_position(deepstacked=True)
+    # profit_per_position(shortstacked=True)
+    # profit_per_position(position = [0])
+    # profit_per_position(position = [1])
+    # profit_per_position(position = [2])
+    # profit_per_position(position = [4])
+    # profit_per_position(position = [5])
+    # profit_per_position()
 
 if __name__ == "__main__":
     main()
